@@ -10,6 +10,6 @@ import reactor.core.publisher.Mono;
 public interface ProductService {
 
     Mono<ProductResponse> getProduct(Integer id);
-    Flux<ProductListResponse> getProducts();
+    Mono<ProductListResponse> getProducts();
 
 }

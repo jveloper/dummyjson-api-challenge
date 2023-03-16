@@ -9,7 +9,8 @@ import reactor.core.publisher.Mono;
 @Service
 public interface CartService {
 
-    Mono<CartResponse> getCart(Integer id);
-    Flux<CartListResponse> getCarts();
+    Mono<CartResponse> getCartById(Integer id);
+    Mono<CartListResponse> getCarts();
+    Mono<CartListResponse> getCartsByUserId(Integer id);
 
 }

@@ -33,12 +33,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Flux<UserListResponse> getUsers() {
+    public Mono<UserListResponse> getUsers() {
 
         return webClient.get()
                 .uri(ResourcesURI.URI_USERS)
                 .retrieve()
-                .bodyToFlux(UserListResponse.class)
+                .bodyToMono(UserListResponse.class)
                 .log();
     }
 

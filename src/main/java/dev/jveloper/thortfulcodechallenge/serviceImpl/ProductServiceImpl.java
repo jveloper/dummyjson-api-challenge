@@ -34,12 +34,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Flux<ProductListResponse> getProducts() {
+    public Mono<ProductListResponse> getProducts() {
 
         return webClient.get()
                 .uri(ResourcesURI.URI_PRODUCTS)
                 .retrieve()
-                .bodyToFlux(ProductListResponse.class)
+                .bodyToMono(ProductListResponse.class)
                 .log();
 
     }

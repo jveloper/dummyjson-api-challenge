@@ -10,6 +10,6 @@ import reactor.core.publisher.Mono;
 public interface UserService {
 
     Mono<UserResponse> getUser(Integer id);
-    Flux<UserListResponse> getUsers();
+    Mono<UserListResponse> getUsers();
 
 }
