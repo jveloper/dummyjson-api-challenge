@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class CartListResponse {
 
-    private List<CartListResponse> carts;
+    private List<CartResponse> carts;
     private Integer limit;
 
 }
