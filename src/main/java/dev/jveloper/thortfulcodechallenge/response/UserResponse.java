@@ -7,6 +7,7 @@ import java.sql.Date;
 @Data
 public class UserResponse {
 
+    private Integer id;
     private String firstName;
     private String LastName;
     private Integer age;
