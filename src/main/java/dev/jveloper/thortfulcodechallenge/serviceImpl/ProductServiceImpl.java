@@ -12,6 +12,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.stream.Collectors;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -34,12 +36,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Mono<ProductListResponse> getProducts() {
+    public Flux<ProductResponse> getProducts() {
 
         return webClient.get()
                 .uri(ResourcesURI.URI_PRODUCTS)
                 .retrieve()
+                .onStatus(status -> status.value() == HttpStatus.BAD_REQUEST.value(),
+                        response -> Mono.error(new RuntimeException()))
                 .bodyToMono(ProductListResponse.class)
+                .flatMapMany(v -> Flux.fromStream(v.getProducts().stream()))
+                .log();
+
+    }
+
+    @Override
+    public Flux<ProductResponse> getProductsByMinStock(Integer minStock) {
+
+        return webClient.get()
+                .uri(ResourcesURI.URI_PRODUCTS)
+                .retrieve()
+                .onStatus(status -> status.value() == HttpStatus.BAD_REQUEST.value(),
+                        response -> Mono.error(new RuntimeException()))
+                .bodyToMono(ProductListResponse.class)
+                .flatMapMany(v -> Flux.fromStream(v.getProducts().stream().filter(s -> s.getStock()> minStock)))
                 .log();
 
     }
