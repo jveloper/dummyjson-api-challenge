@@ -4,6 +4,7 @@ import dev.jveloper.thortfulcodechallenge.dto.ProductDto;
 import dev.jveloper.thortfulcodechallenge.dto.ProductListDto;
 import dev.jveloper.thortfulcodechallenge.dto.UserDto;
 import dev.jveloper.thortfulcodechallenge.dto.UserListDto;
+import dev.jveloper.thortfulcodechallenge.response.ProductListResponse;
 import dev.jveloper.thortfulcodechallenge.serviceImpl.ProductServiceImpl;
 import dev.jveloper.thortfulcodechallenge.serviceImpl.UserServiceImpl;
 import org.modelmapper.ModelMapper;
@@ -29,16 +30,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Flux<ProductListDto>> retrieveUsers(){
-
+    public ResponseEntity<Mono<ProductListDto>> retrieveUsers(){
         return ResponseEntity.ok(productService.getProducts().map(v -> modelMapper.map(v, ProductListDto.class)));
 
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Mono<ProductDto>> retrieveUserById(@PathVariable("id") String userId){
-
-        return ResponseEntity.ok(productService.getProduct(Integer.parseInt(userId)).map(v -> modelMapper.map(v, ProductDto.class)));
+    public ResponseEntity<Mono<ProductDto>> retrieveUserById(@PathVariable("id") String id){
+        return ResponseEntity.ok(productService.getProduct(Integer.parseInt(id)).map(v -> modelMapper.map(v, ProductDto.class)));
 
     }
 

@@ -1,5 +1,7 @@
 package dev.jveloper.thortfulcodechallenge.controller;
 
+import dev.jveloper.thortfulcodechallenge.dto.CartDto;
+import dev.jveloper.thortfulcodechallenge.dto.CartListDto;
 import dev.jveloper.thortfulcodechallenge.dto.UserDto;
 import dev.jveloper.thortfulcodechallenge.dto.UserListDto;
 import dev.jveloper.thortfulcodechallenge.response.CartListResponse;
@@ -22,23 +24,26 @@ public class CartController {
     private final CartServiceImpl cartService;
     private final ModelMapper modelMapper;
 
-
     public CartController(CartServiceImpl cartService, ModelMapper modelMapper) {
         this.cartService = cartService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping
-    public ResponseEntity<Flux<CartListResponse>> retrieveCarts(){
-
-        return ResponseEntity.ok(cartService.getCarts().map(v -> modelMapper.map(v, CartListResponse.class)));
+    public ResponseEntity<Mono<CartListDto>> retrieveCarts(){
+        return ResponseEntity.ok(cartService.getCarts().map(c -> modelMapper.map(c, CartListDto.class)));
 
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Mono<CartResponse>> retrieveCartById(@PathVariable("id") String userId){
+    public ResponseEntity<Mono<CartDto>> retrieveCartById(@PathVariable("id") String id){
+        return ResponseEntity.ok(cartService.getCartById(Integer.parseInt(id)).map(c -> modelMapper.map(c, CartDto.class)));
 
-        return ResponseEntity.ok(cartService.getCart(Integer.parseInt(userId)).map(v -> modelMapper.map(v, CartResponse.class)));
+    }
+
+    @GetMapping("user/{id}")
+    public ResponseEntity<Mono<CartListDto>> retrieveCartByUserId(@PathVariable("id") String userId){
+        return ResponseEntity.ok(cartService.getCartsByUserId(Integer.parseInt(userId)).map(c -> modelMapper.map(c, CartListDto.class)));
 
     }
 

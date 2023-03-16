@@ -28,15 +28,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<Flux<UserListDto>> retrieveUsers(){
-
-        return new ResponseEntity<>(userService.getUsers().map(v -> modelMapper.map(v, UserListDto.class)),HttpStatus.OK);
+    public ResponseEntity<Mono<UserListDto>> retrieveUsers(){
+        return ResponseEntity.ok(userService.getUsers().map(v -> modelMapper.map(v, UserListDto.class)));
 
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Mono<UserDto>> retrieveUserById(@PathVariable("id") String userId){
-
         return ResponseEntity.ok(userService.getUser(Integer.parseInt(userId)).map(v -> modelMapper.map(v, UserDto.class)));
 
     }
