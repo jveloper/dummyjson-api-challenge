@@ -29,9 +29,7 @@ public class CartServiceImpl implements CartService {
     public Mono<CartResponse> getCart(Integer id) {
 
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/carts/{id}")
-                        .build(id))
+                .uri(ResourcesURI.URI_CARTS + id)
                 .retrieve()
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
                         response -> Mono.error(new ResourceNotFoundException(id)))
@@ -43,9 +41,7 @@ public class CartServiceImpl implements CartService {
     public Flux<CartListResponse> getCarts() {
 
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/carts")
-                        .build())
+                .uri(ResourcesURI.URI_USERS)
                 .retrieve()
                 .bodyToFlux(CartListResponse.class)
                 .log();

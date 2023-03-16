@@ -1,6 +1,7 @@
 package dev.jveloper.thortfulcodechallenge.serviceImpl;
 
 import dev.jveloper.thortfulcodechallenge.exception.ResourceNotFoundException;
+import dev.jveloper.thortfulcodechallenge.helper.ResourcesURI;
 import dev.jveloper.thortfulcodechallenge.response.UserListResponse;
 import dev.jveloper.thortfulcodechallenge.response.UserResponse;
 import dev.jveloper.thortfulcodechallenge.service.UserService;
@@ -23,9 +24,7 @@ public class UserServiceImpl implements UserService {
     public Mono<UserResponse> getUser(Integer id) {
 
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/users/{id}")
-                        .build(id))
+                .uri(ResourcesURI.URI_USERS + id)
                 .retrieve()
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
                         response -> Mono.error(new ResourceNotFoundException(id)))
@@ -37,9 +36,7 @@ public class UserServiceImpl implements UserService {
     public Flux<UserListResponse> getUsers() {
 
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/users")
-                        .build())
+                .uri(ResourcesURI.URI_USERS)
                 .retrieve()
                 .bodyToFlux(UserListResponse.class)
                 .log();

@@ -25,9 +25,7 @@ public class ProductServiceImpl implements ProductService {
     public Mono<ProductResponse> getProduct(Integer id) {
 
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/products/{id}")
-                        .build(id))
+                .uri(ResourcesURI.URI_PRODUCTS + id)
                 .retrieve()
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
                         response -> Mono.error(new ResourceNotFoundException(id)))
@@ -39,9 +37,7 @@ public class ProductServiceImpl implements ProductService {
     public Flux<ProductListResponse> getProducts() {
 
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/products")
-                        .build())
+                .uri(ResourcesURI.URI_PRODUCTS)
                 .retrieve()
                 .bodyToFlux(ProductListResponse.class)
                 .log();
