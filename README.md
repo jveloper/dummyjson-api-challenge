@@ -1,4 +1,4 @@
-# Thortful API Challenge
+# DummyJson API Challenge
 
 This is a sample Java / Maven / Spring Boot (version 3) application to respond to the proposed challenge. I chose the reactive programming instead of tradicional Spring MVC option for this project in order to show that I can also have these concepts for future projects. So i use with Spring Webflux framework.
 
@@ -11,8 +11,8 @@ DummyJSON (https://dummyjson.com/) was chosen for external calls.
 * Clone this repository
 * Make sure you are using JDK 17
 * package application with ```mvn clean package```
-* build docker image ```docker build -t thortful-api-challenge:v1 .```
-* Run container ```docker run -d -p 8081:8081 --name thortful-api-challenge:v1```
+* build docker image ```docker build -t dummyjson-api-challenge:v1 .```
+* Run container ```docker run -d -p 8081:8081 --name dummyjson-api-challenge:v1```
 
 
 #### Using Maven Plugin
