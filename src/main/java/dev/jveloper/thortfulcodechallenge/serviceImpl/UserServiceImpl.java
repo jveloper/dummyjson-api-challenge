@@ -2,6 +2,7 @@ package dev.jveloper.thortfulcodechallenge.serviceImpl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import dev.jveloper.thortfulcodechallenge.dto.UserDto;
 import dev.jveloper.thortfulcodechallenge.exception.ResourceNotFoundException;
 import dev.jveloper.thortfulcodechallenge.helper.ResourcesURI;
@@ -23,11 +24,11 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     private final WebClient webClient;
-    private final ObjectMapper objectMapper;
+    private final Gson gson;
 
-    public UserServiceImpl(WebClient webClient, ObjectMapper objectMapper) {
+    public UserServiceImpl(WebClient webClient, Gson gson) {
         this.webClient = webClient;
-        this.objectMapper = objectMapper;
+        this.gson = gson;
     }
 
     @Override
@@ -40,7 +41,6 @@ public class UserServiceImpl implements UserService {
                         response -> Mono.error(new ResourceNotFoundException(id)))
                 .bodyToMono(UserResponse.class)
                 .log();
-
 
     }
 
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         return webClient.put()
                 .uri(ResourcesURI.URI_USERS + userId)
-                .body(BodyInserters.fromValue(user))
+                .body(BodyInserters.fromValue(gson.toJson(user)))
                 .retrieve()
                 .onStatus(status -> status.value() == HttpStatus.BAD_REQUEST.value(),
                         response -> Mono.error(new RuntimeException()))
